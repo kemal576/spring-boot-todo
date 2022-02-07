@@ -87,7 +87,7 @@ public class TodoServiceImpl implements TodoService {
     public ResponseEntity<?> Delete(Long id) {
         Optional<Todo> existingTodo = todoRepository.findById(id);
         if (existingTodo.isPresent()) {
-            if (jwtUtils.checkLoginUserWithUserId(id)) {
+            if (jwtUtils.checkLoginUserWithUserId(existingTodo.get().getUser().getId())) {
                 todoRepository.deleteById(id);
                 ResponseEntity.ok();
             }

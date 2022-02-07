@@ -3,6 +3,7 @@ package com.sahinkemal.todoapp.Service.Concrete;
 import com.sahinkemal.todoapp.Entity.ErrorResponse;
 import com.sahinkemal.todoapp.Entity.LoginRequest;
 import com.sahinkemal.todoapp.Entity.LoginResponse;
+import com.sahinkemal.todoapp.Entity.User;
 import com.sahinkemal.todoapp.Repository.UserRepository;
 import com.sahinkemal.todoapp.Service.Abstract.AuthService;
 import com.sahinkemal.todoapp.Util.JwtUtil;
@@ -45,5 +46,16 @@ public class AuthServiceImpl implements AuthService {
         final String jwt = jwtUtils.generateToken(loginRequest.getUsername());
         final Long userId = userRepository.findByUsername(loginRequest.getUsername()).get().getId();
         return ResponseEntity.ok(new LoginResponse(userId, jwt));
+    }
+
+    @Override
+    public ResponseEntity<?> Create(User user){
+        if (userRepository.findByEmail(user.getEmail()).isPresent())
+            return ResponseEntity.status(409).body(new ErrorResponse(409,false,"This e-mail address is already registered."));
+        else if (userRepository.findByUsername(user.getUsername()).isPresent())
+            return ResponseEntity.status(409).body(new ErrorResponse(409,false,"This username is already registered."));
+        else
+            return ResponseEntity.ok(userRepository.save(user));
+
     }
 }

@@ -11,8 +11,15 @@ import java.util.Date;
 @Table(name = "todos")
 public class Todo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
+    @SequenceGenerator(
+            name = "todo_sequence",
+            sequenceName = "todo_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "todo_sequence"
+    )
     private Long id;
 
     @Column(nullable = false)

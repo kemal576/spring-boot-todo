@@ -44,19 +44,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> Create(User user){
-        if (jwtUtils.checkLoginUserWithUserId(user.getId())){
-            if (userRepository.findByEmail(user.getEmail()).isPresent())
-                return ResponseEntity.status(409).body(new ErrorResponse(409,false,"This e-mail address is already registered."));
-            else if (userRepository.findByUsername(user.getUsername()).isPresent())
-                return ResponseEntity.status(409).body(new ErrorResponse(409,false,"This username is already registered."));
-            else
-                return ResponseEntity.ok(userRepository.save(user));
-        }
-        return ResponseEntity.status(403).body(new ErrorResponse(403,false,"You are not authorized for this action."));
-    }
-
-    @Override
     public ResponseEntity<?> Update(User user) {
         if (jwtUtils.checkLoginUserWithUserId(user.getId())) {
             User existingUser = userRepository.findById(user.getId()).orElse(null);

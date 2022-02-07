@@ -8,7 +8,6 @@ import java.util.List;
 public interface UserService {
     ResponseEntity<?> GetAll();
     ResponseEntity<?> GetById(Long id);
-    ResponseEntity<?> Create(User user);
     ResponseEntity<?> Update(User user);
     ResponseEntity<?> Delete(Long id);
 }
